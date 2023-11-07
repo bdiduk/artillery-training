@@ -1,0 +1,87 @@
+html, body, #root {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.app {
+    height: 100%;
+}
+
+.game {
+    background-color: peachpuff;
+    width: 70%;
+}
+
+.game-wrapper {
+    background-image: url('./media/background.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 70%;
+    /*position: relative;*/
+    cursor: none;
+}
+
+.game-field {
+    width: 100%;
+    height: 25%;
+    /*background-color: red;*/
+    /*opacity: 0.2;*/
+
+    position: relative;
+    top: 75%;
+}
+
+.game-field-image {
+    z-index: 10;
+    height: 60%;
+    position: absolute;
+}
+
+.target {
+}
+
+.reference-point {
+    position: relative;
+}
+
+.explosion {
+    z-index: 1;
+}
+
+.greyed {
+    filter: grayscale(0.8);
+}
+
+.settings {
+    text-align: center;
+    width: 30%;
+    background-color: aliceblue;
+}
+
+.fire-menu {
+    width: max-content;
+    padding: 5px;
+}
+
+.coordinates {
+    padding: 3px;
+    display: block;
+}
+
+.column {
+    float: left;
+    height: 100%;
+}
+
+.custom-mouse-pointer {
+    position: absolute;
+    width: 768px; /* Adjust the size as needed */
+    height: 768px; /* Adjust the size as needed */
+    background-image: url('./media/reticle.png');
+    background-size: cover;
+    transform: translate(-50%, -50%);
+    pointer-events: none; /* Allows interactions with elements beneath the pointer */
+    filter: hue-rotate(180deg);
+}
