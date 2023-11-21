@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/artillery-training/static/css/main.6816dc62.css",
+    "main.js": "/artillery-training/static/js/main.a4a447fb.js",
+    "static/media/background.png": "/artillery-training/static/media/background.ec88bb2daed10ca7c8c1.png",
+    "static/media/reticle.png": "/artillery-training/static/media/reticle.3dadca615a9e490780f2.png",
+    "static/media/bmp.png": "/artillery-training/static/media/bmp.4b0f99babe4ca44cf068.png",
+    "static/media/soldier.png": "/artillery-training/static/media/soldier.cd7c8c977152509badbb.png",
+    "index.html": "/artillery-training/index.html",
+    "main.6816dc62.css.map": "/artillery-training/static/css/main.6816dc62.css.map",
+    "main.a4a447fb.js.map": "/artillery-training/static/js/main.a4a447fb.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6816dc62.css",
+    "static/js/main.a4a447fb.js"
+  ]
+}
