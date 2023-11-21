@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+/src/react_training
+/src/test
+/src/reportWebVitals.js
+/src/setupTests.js
