@@ -1,8 +1,8 @@
 import './App.css';
-import {createContext, useEffect, useState} from "react";
+import {createContext, useContext, useState} from "react";
 
 import {Target, ReferencePoint, getRandomXYPositions} from './GameFieldImage';
-import {Explosion, ExplosionList} from './Explosion';
+import {ExplosionList} from './Explosion';
 import {MouseAimPointer} from './MouseAimPointer';
 
 function Game({ gameFieldProps, explosionList }) {
@@ -16,39 +16,40 @@ function Game({ gameFieldProps, explosionList }) {
 
 function Field({ gameFieldProps, explosionList }) {
     return (
-        <div className="game-field">
+        <div className="game-field" id="game-field">
             <Target positionProps={gameFieldProps.target}/>
             <ReferencePoint positionProps={gameFieldProps.reference}/>
-            <ExplosionList explosionList={explosionList}/>
+            <ExplosionList targetPos={gameFieldProps.target.pos} explosionList={explosionList}/>
         </div>
     );
 }
 
-function Settings({handleFireClick, handleResetExplosions}) {
-    function handleRerender() {
-        console.log('rerendered... nope :(')
-    }
-
+function Settings({handleFireClick, handleResetExplosions, handleRestart}) {
     return (
         <div className="settings">
             <h3>Settings</h3>
-            <FireMenu handleFireButton={handleFireClick} handleResetExplosions={handleResetExplosions}/>
-            {/*<button className="rerender-targets" onClick={handleRerender}>Rerender targets</button>*/}
+            <FireMenu
+                handleFireButton={handleFireClick}
+                handleResetExplosions={handleResetExplosions}
+                handleRestart={handleRestart} />
         </div>
     );
 }
 
-function FireMenu({handleFireButton: handleFireClick, handleResetExplosions}) {
+function FireMenu({handleFireButton: handleFireClick, handleResetExplosions, handleRestart}) {
     const [xAdjustment, setXAdjustment] = useState('');
     const [yAdjustment, setYAdjustment] = useState('');
 
     function onFireButtonClick() {
-        // console.log('handle fire click');
         handleFireClick(xAdjustment, yAdjustment);
     }
 
     function onResetExplosions() {
         handleResetExplosions();
+    }
+
+    function onRestart() {
+        handleRestart();
     }
 
     function onAdjustmentChange(value, type) {
@@ -83,57 +84,73 @@ function FireMenu({handleFireButton: handleFireClick, handleResetExplosions}) {
             <button type="button" onClick={onResetExplosions}>
                 Reset explosions
             </button>
+            <br/>
+            <br/>
+            <button type="button" onClick={onRestart}>
+                Restart
+            </button>
         </div>
     );
 }
 
-const WindowSizeContext = createContext({width: window.innerWidth, height: window.innerHeight});
+export const WindowSizeContext = createContext({width: window.innerWidth, height: window.innerHeight});
 
 function App() {
-    const [targetPos, setTargetPos] = useState(getRandomXYPositions(5, 95, 0, 60))
-    const [referencePos, setReferencePos] = useState(getRandomXYPositions(5, 95, 0, 60))
+    const windowSize = useContext(WindowSizeContext);
+
+    const [targetPos, setTargetPos] = useState(getRandomXYPositions(windowSize))
+    const [referencePos, setReferencePos] = useState(getRandomXYPositions(windowSize))
+    const [explosionList, setExplosionList] = useState([]);
+
     const gameFieldProps = {
         target: {pos: targetPos, setPos: setTargetPos},
         reference: {pos: referencePos, setPos: setReferencePos},
     };
-    // const [explosionList, setExplosionList] = useState([<Explosion targetPos={targetPos} key='0'/>]);
-    const [explosionList, setExplosionList] = useState([]);
     // const [windowSize, setWindowSize] = useState({width: window.innerWidth, height: window.innerHeight})
 
     function addExplosion(xAdjustment, yAdjustment) {
-        const adjustments = {
-            xAdjustment: xAdjustment,
-            yAdjustment: yAdjustment
-        };
-        const explosion = <Explosion targetPos={targetPos} adjustments={adjustments} key={explosionList.length}/>;
-        setExplosionList([
-            ...explosionList, explosion
-        ]);
+        let pos;
+
+        if (explosionList.length === 0) {
+            pos = {...referencePos};
+        } else {
+            pos = {...explosionList[explosionList.length - 1]};
+        }
+
+        pos.posX += parseInt(xAdjustment) || 0;
+        pos.posY += parseInt(yAdjustment) || 0;
+
+        setExplosionList([...explosionList, pos]);
+        // console.log(explosionList);
     }
 
     function clearExplosionList() {
         setExplosionList([]);
     }
 
-    // const handleResize = () => {
-    //     setWindowSize({
-    //         width: window.innerWidth,
-    //         height: window.innerHeight
-    //     });
-    // };
-    //
-    // useEffect(() => {
-    //     window.addEventListener('resize', handleResize);
-    //
-    //     return () => {
-    //         window.removeEventListener('resize', handleResize);
-    //     }
-    // }, []);
+    function restartApp() {
+        const newTargetPos = getRandomXYPositions(windowSize);
+        const newReferencePos = getRandomXYPositions(windowSize);
+
+        setTargetPos(newTargetPos);
+        setReferencePos(newReferencePos);
+        clearExplosionList();
+        console.log('restart');
+    }
 
     return (
         <div className="app">
-            <div className="game column"><Game gameFieldProps={gameFieldProps} explosionList={explosionList}/></div>
-            <div className="settings column"><Settings handleFireClick={addExplosion} handleResetExplosions={clearExplosionList}/></div>
+            <div className="game column">
+                <Game
+                    gameFieldProps={gameFieldProps}
+                    explosionList={explosionList}/>
+            </div>
+            <div className="settings column">
+                <Settings
+                    handleFireClick={addExplosion}
+                    handleResetExplosions={clearExplosionList}
+                    handleRestart={restartApp} />
+            </div>
         </div>
     );
 }

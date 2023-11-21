@@ -2,17 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 // import './index.css';
 import App from './App';
-// import AppReact from './react_training/App_react';
-import ProductSearch from './react_training/ProductSearch';
 // import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.Fragment>
+  <React.StrictMode>
     <App />
-    {/*<AppReact />*/}
-    {/*<ProductSearch />*/}
-  </React.Fragment>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

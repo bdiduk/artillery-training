@@ -7,30 +7,39 @@ function randomNumberInRange (min, max) {
         * (max - min + 1)) + min;
 }
 
-export function getRandomXYPositions(xMin, xMax, yMin, yMax) {
+export function getRandomXYPositions(windowSize) {
+    const width = windowSize.width;
+    const height = windowSize.height;
+
+    const xStart = 0;
+    const yStart = 0;
+    const xEnd = width * .7;
+    const yEnd = height * .175;
+
     return {
-        posX: randomNumberInRange(xMin, xMax),
-        posY: randomNumberInRange(yMin, yMax)
+        posX: randomNumberInRange(xStart, xEnd - 60),
+        posY: randomNumberInRange(yStart, yEnd - 90)
     };
 }
 
-export default function GameFieldImage({positionProps, info, explosion = false}) {
+export default function GameFieldImage({positionProps, info}) {
     const position = positionProps.pos;
 
-    function handleClick () {
-        console.log('clicked!');
-        if (info.isClickable) {
-            const newPos = getRandomXYPositions(5, 95, 0, 60);
-            positionProps.setPos(newPos);
-        }
-    }
+    // function handleClick () {
+    //     return;
+    //     console.log('clicked!');
+    //     if (info.isClickable) {
+    //         const newPos = GetRandomXYPositions();
+    //         positionProps.setPos(newPos);
+    //     }
+    // }
 
     return (
         <img
             src={info.imageSrc}
             className={"game-field-image " + info.className + info.additionalClasses}
-            style={{left: position.posX + '%', top: position.posY + '%'}}
-            onClick={() => handleClick()}
+            style={{left: position.posX + 'px', top: position.posY + 'px'}}
+            // onClick={() => handleClick()}
             alt="target"/>
     );
 };
